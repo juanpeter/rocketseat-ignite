@@ -12,6 +12,7 @@ import {
   StartcountdownButton,
   TaskInput
 } from "./styles";
+import { useState } from "react";
 
 const newCycleValidatitionSchema = zod.object({
   task: zod.string().min(1, 'Please add a task'),
@@ -25,7 +26,16 @@ const newCycleValidatitionSchema = zod.object({
 // Using typeof means you are referecing a js var in ts as a type
 type NewCycleFormData = zod.infer<typeof newCycleValidatitionSchema>
 
+interface Cycle {
+  id: string;
+  task: string;
+  minutesAmmount: string;
+}
+
 export function Home() {
+
+  const [cycles, setCycles] = useState<Cycle[]>([])
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
 
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleValidatitionSchema),
@@ -36,9 +46,22 @@ export function Home() {
   })
 
   function handleCreateNewCycle(data: any) {
-    console.log(data)
+    const id = String(new Date().getTime())
+
+    const newCycle: Cycle = {
+      id,
+      task: data.task,
+      minutesAmmount: data.minutesAmmount,
+    }
+
+    // TO-DO: Closure data, I did not understand the concept completely tbh
+    // State is used to access previous data saved in a component
+    setCycles((state) => [...state, newCycle])
+    setActiveCycleId(id)
     reset()
   }
+
+  const activeCycle = cycles.find(cycle => cycle.id == activeCycleId)
 
   const task = watch('task')
   // Helper var, can look redundant but helps code reading

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-//TO-DO: Maybe change stuff here
 export const LayoutContainer = styled.div`
   max-width: 74rem;
   height: calc(100vh - 10rem);
