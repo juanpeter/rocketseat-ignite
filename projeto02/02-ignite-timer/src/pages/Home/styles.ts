@@ -36,6 +36,7 @@ const baseInput = styled.input`
   font-size: 1.125rem;
   padding: 0 0.5rem;
   display: flex;
+  color: ${(props) => props.theme['gray-500']};
 
   &:focus {
     box-shadow: none;
